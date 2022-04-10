@@ -11,9 +11,9 @@ import fire
 import questionary
 from pathlib import Path
 
-from qualifier.utils.fileio import load_csv
+from utils.fileio import load_csv
 
-from qualifier.utils.calculators import (
+from  utils.calculators import (
     calculate_monthly_debt_ratio,
     calculate_loan_to_value_ratio,
 )
