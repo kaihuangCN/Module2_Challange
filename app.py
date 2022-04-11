@@ -8,9 +8,10 @@ Example:
 """
 import sys
 import fire
+from numpy import save
 import questionary
 from pathlib import Path
-
+import csv 
 from utils.fileio import load_csv
 
 from  utils.calculators import (
@@ -98,6 +99,7 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
     bank_data_filtered = filter_loan_to_value(loan_to_value_ratio, bank_data_filtered)
 
     print(f"Found {len(bank_data_filtered)} qualifying loans")
+    print(bank_data_filtered)
 
     return bank_data_filtered
 
@@ -108,10 +110,19 @@ def save_qualifying_loans(qualifying_loans):
     Args:
         qualifying_loans (list of lists): The qualifying bank loans.
     """
-    # @TODO: Complete the usability dialog for savings the CSV Files.
-    # YOUR CODE HERE!
+    header = ["Lender","Max Loan Amount","Max LTV,Max DTI","Min Credit Score","Interest Rate"]
 
+    # Create file path for the saved CSV file
+    csvpath = questionary.text("Enter a file path to save the results (.csv):").ask()
+    csvpath = Path(csvpath)
+    with open(csvpath, "w") as csvfile:
+        cswriter=csv.writer(csvfile, delimiter=',')
+        cswriter.writerow(header)
+        for qualified in qualifying_loans:
+            cswriter.writerow(qualified)
 
+    return csvfile
+        
 def run():
     """The main function for running the script."""
 
